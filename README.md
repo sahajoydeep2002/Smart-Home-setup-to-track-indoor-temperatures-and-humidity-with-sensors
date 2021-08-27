@@ -299,7 +299,7 @@ Go to Index.vue and update the basic dashboard layout. You can use static images
 
 To fetch necessary data on initial page load we make use of Vue.js' created() function in the scripts section below the template. We insert a new function this.fetchData(); there and implement this new function in the methods' block.
 
- methods: {
+methods: {
   fetchData() {
    this.loaded = false;
    this.$axios
@@ -322,6 +322,9 @@ To fetch necessary data on initial page load we make use of Vue.js' created() fu
   });
  }
 }
+
+
+
 
 We simply use the axios library (Github link) which Quasar included right from the setup, so we can use it globally without importing it explicitly. If this works properly you should be able to log the array of sensor data in your browser's developer tools. If there is any problem, we trigger the Quasar component notification and include the error message.
 
