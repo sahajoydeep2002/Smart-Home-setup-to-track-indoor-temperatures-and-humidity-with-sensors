@@ -203,7 +203,7 @@ client.on('message', function (topic, message) {
    
    // console.log(json);
    
-   if (json.model === 'inFactory sensor') {
+  if (json.model === 'inFactory sensor') {
    
      if (json.id === 91 '' json.id === 32) {
      
@@ -227,15 +227,15 @@ client.on('message', function (topic, message) {
             
             humidity: json.humidity, time: formattedTime }).write()
             
-       }
+          }
        
-     }
+        } 
      
-   }
+      }
    
- } catch (e) {
+    } catch (e) {
  
-   console.error(stringBuf);
+      console.error(stringBuf);
    
       }
       
