@@ -178,7 +178,7 @@ In your server.js add some code. Set some defaults first, which are required if 
 
 
 <p align = "center">
-<img class = "center" width = 70% src="vue-frontend/code 1_page-0001.jpg">
+<img class = "center" width = 40% src="vue-frontend/code 1_page-0001.jpg">
 </p>
 Editavle Code : 
 const mqtt = require('mqtt');
@@ -222,7 +222,7 @@ That's it. Whenever the MQTT client receives sensor data it will store it in our
 
 
 <p align = "center">
-<img class = "center" width = 70% src="vue-frontend/code 2_page-0001.jpg">
+<img class = "center" width = 40% src="vue-frontend/code 2_page-0001.jpg">
 </p>
 Editable Code : 
 {
