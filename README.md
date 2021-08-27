@@ -127,7 +127,7 @@ npm install express --save
 node server.js
 Go to your browser and check if your web server works on http://localhost:3000.
 
-##Setup the MQTT broker Mosquitto
+## Setup the MQTT broker Mosquitto
 
 Why MQTT? The protocol is a lightweight publish/subscribe messaging transport solution which is very popular in the IoT field. We will use a MQTT broker as the control center to receive raw sensor data from our rtl_433 program, we installed in the previous chapter and forward them to our web server. Mosquitto is a common MQTT broker and is installed and tested on or Raspberry Pi with
 
@@ -203,36 +203,66 @@ My setup included some buffer, temperature and date parsing, basic verifying and
 
 
 const mqtt = require('mqtt');
+
 const client = mqtt.connect(mqtt://localhost:1883);
+
 fahrenheitToCelsius = (fahrenheit) => {
+
  var fTempVal = parseFloat(fahrenheit);
+ 
  var cTempVal = (fTempVal - 32) * (5 / 9);
+ 
  return (Math.round(cTempVal * 100) / 100);
+ 
 }
+
 client.on('message', function (topic, message) {
+
  // message is buffer
+ 
  var stringBuf = message && message.toString('utf-8')
+ 
  try {
+ 
    var json = JSON.parse(stringBuf);
+   
    // console.log(json);
+   
    if (json.model === 'inFactory sensor') {
+   
      if (json.id === 91 '' json.id === 32) {
+     
      // catch my specific sensor model
+     
        if (json.temperature_F && json.humidity) {
+       
        // add data to lowdb
+       
        const time = moment.utc(json.time).tz("Europe/Berlin");
+       
        const formattedTime = time.format('YYYY-MM-DD HH:mm:ss');
+       
        console.log('write post');
+       
        db.get('posts')
+       
        .push({ id: uuid.v1(), room: json.id, temp: 
+       
             fahrenheitToCelsius(json.temperature_F), 
+            
             humidity: json.humidity, time: formattedTime }).write()
+            
        }
      }
+     
    }
+   
  } catch (e) {
+ 
    console.error(stringBuf);
+   
    }
+   
 })
 
 
