@@ -6,8 +6,9 @@ Smart Home setup to track indoor temperatures and humidity with sensors, Raspber
 
 TLDR; This three-part tutorial explains how to setup a basic smart home web app tracking sensor data for temperature and humidity with a Raspberry Pi and web technologies like Mosquitto, Node.js, Express.js, Vue.js, Quasar and Chart.js.
 
-<img class = "center" width = 70% src="Smart-Home-setup-to-track-indoor-temperatures-and-humidity-with-sensors/ vue-frontend/01741853357341038f43d5a2d33daa5a.png
-">
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/01741853357341038f43d5a2d33daa5a.png">
+</p>">
 
 ### Start the Node.js backend on port 3000
 * cd server
