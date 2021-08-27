@@ -18,7 +18,7 @@ I wrote this three-part tutorial to track my experiences, tech choices and sugge
 
 The basic three parts will allow you to run a web application on your local machine. Nevertheless I added some more features including persistent database storing and the deployment in the cloud with Heroku. You will find these tutorials at the end of this page. The code base is stored on Github!
 
-###Choose and install hardware (sensors, receiver, Raspberry Pi) for a basic tracking tool on temperature and humidity
+###Choose and install hardware (sensors, receiver, Raspberry Pi) for a basic tracking tool on temperature and humidity###
 
 I did some research on how to build basic weather stations and home automation systems with a Raspberry Pi but they were mostly no wireless solutions or they came up with too much IoT hacking/soldering and especially required a lot of electrical knowledge I do not have. The core problem I figured out was that many tutorials wanted me to build a remote sensor gagdet with radio functionality and sleep mode (e.g. with an Arduino) all on my own. So the question was: Is there a better and easier alternative to such an all self made solution and what about the receiving hardware on the Raspberry Pi?
 
