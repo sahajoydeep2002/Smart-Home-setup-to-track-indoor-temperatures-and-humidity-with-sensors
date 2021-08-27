@@ -298,7 +298,10 @@ Go to Index.vue and update the basic dashboard layout. You can use static images
 # Fetch sensor data from Node.js backend
 
 To fetch necessary data on initial page load we make use of Vue.js' created() function in the scripts section below the template. We insert a new function this.fetchData(); there and implement this new function in the methods' block.
-
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/code 3_page-0001.jpg">
+</p>
+Editable Code: 
 methods: {
   fetchData() {
    this.loaded = false;
@@ -325,11 +328,13 @@ methods: {
 
 
 
-
 We simply use the axios library (Github link) which Quasar included right from the setup, so we can use it globally without importing it explicitly. If this works properly you should be able to log the array of sensor data in your browser's developer tools. If there is any problem, we trigger the Quasar component notification and include the error message.
 
 Hint: If you encounter CORS problems in the communication between front- and backend (e. g. "No Access-Control-Allow-Origin header is present on the requested resource.") edit your server.js and restart it as follows:
-
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/code 4_page-0001.jpg">
+</p>
+Editable Code: 
 app.use(function (req, res, next) {
  res.header("Access-Control-Allow-Origin", "*");
  res.header("Access-Control-Allow-Headers", 
@@ -345,6 +350,10 @@ npm install vue-chartsjs --save
 
 Now we build a generic, reusable line chart component to use in the web application. Create a new file "LineChart.js" in the src/components folder and import the vue-chartsjs package. Furthermore, we will follow the basic tutorial for the package and specify a data collection prop and an options prop that will prettify our line chart later.
 
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/code 5_page-0001.jpg">
+</p>
+Editable Code : 
 import { Line } from 'vue-chartjs';
 export default {
  extends: Line,
@@ -363,8 +372,75 @@ export default {
  }
 }
 
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/4519a16c52c64bf493739b0ca16c590f.png">
+</p>
+
+We also have to edit our fetchData(); function and transfer the fetched data as a processible JSON to the data collection prop.
+
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/code 6_page-0001.jpg">
+</p>
+Editable Code : // process the backend response and add labels and some styling for the Chart.js api  
+const datacollection_humidity = {
+   labels: response.map(obj => obj.time),
+   datasets: [
+     {
+       label: "Humidity",
+       backgroundColor: "#000",
+       data: response.map(obj => obj.humidity)
+     }
+   ]
+};
+this.datacollection_humidity = datacollection_humidity;
+// set some optional properties regarding axes and ticks
+this.options_humidity = {
+   scales: {
+   xAxes: [
+     {
+       type: "time",
+       distribution: "linear"
+     }
+   ],
+   yAxes: [
+     {
+       scaleLabel: {
+       display: true
+     },
+   ticks: {
+     callback: function(value, index, values) {
+       return value + "%";
+       }
+     }
+    }
+   ]
+  }
+};
+
+Don't forget to add the LineChart component and the necessary "loaded" data prop in your Vue.js script section.
+
+
+
 Switch to the Index.vue again and include a new line chart component (html tag) in your template. We want to display it within the card component. Additionally we specify some properties: v-if="loaded" will tell the component that it should only mount, if the according data prop is true. Also, we transfer the fetched datacollection_humidity and options_humidity as our generic datacollection and options into the line chart.
 
+
+<p align = "center">
+<img class = "center" width = 60% src="vue-frontend/code 7_page-0001.jpg">
+</p>
+Editable Code :
+export default {
+ name: "PageIndex",
+ components: {
+   LineChart
+   },
+ data() {
+   return {
+     loaded: false,
+     };
+   }
+}
+
+That's it! On every page reload, the web application fetches available sensor data from our backend service and will display it as a line chart. You would like to add more functionality? You can find all features we built and more (filtering, reloading, deploying, saving persistently, ..) in my Github repository for this project.
 
 
 ### Start the Node.js backend on port 3000
