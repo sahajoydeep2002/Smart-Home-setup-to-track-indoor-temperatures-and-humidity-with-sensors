@@ -203,67 +203,36 @@ My setup included some buffer, temperature and date parsing, basic verifying and
 
 
 const mqtt = require('mqtt');
-
 const client = mqtt.connect(mqtt://localhost:1883);
-
 fahrenheitToCelsius = (fahrenheit) => {
-
  var fTempVal = parseFloat(fahrenheit);
- 
  var cTempVal = (fTempVal - 32) * (5 / 9);
- 
  return (Math.round(cTempVal * 100) / 100);
- 
 }
-
 client.on('message', function (topic, message) {
-
  // message is buffer
- 
  var stringBuf = message && message.toString('utf-8')
- 
  try {
- 
    var json = JSON.parse(stringBuf);
-   
    // console.log(json);
-   
    if (json.model === 'inFactory sensor') {
-   
      if (json.id === 91 '' json.id === 32) {
-     
      // catch my specific sensor model
-     
        if (json.temperature_F && json.humidity) {
-       
        // add data to lowdb
-       
        const time = moment.utc(json.time).tz("Europe/Berlin");
-       
        const formattedTime = time.format('YYYY-MM-DD HH:mm:ss');
-       
        console.log('write post');
-       
        db.get('posts')
-       
        .push({ id: uuid.v1(), room: json.id, temp: 
-       
             fahrenheitToCelsius(json.temperature_F), 
-            
             humidity: json.humidity, time: formattedTime }).write()
-            
        }
-       
      }
-     
    }
-   
  } catch (e) {
- 
    console.error(stringBuf);
-   
    }
-   
 })
 
 
