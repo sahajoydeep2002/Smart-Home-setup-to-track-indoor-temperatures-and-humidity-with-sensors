@@ -38,6 +38,20 @@ At first, setup your sensors whereever you like in your appartment and connect y
 <img class = "center" width = 70% src="vue-frontend/image1_page-0001.jpg">
 </p>
 
+After that we test if the program detects our RTL-SDR receiver with
+
+rtl_433 -G
+
+I had some trouble with the following error: Kernel driver is active, or device is claimed by second instance of librtlsdr. In the first case, please either detach or blacklist the kernel module (dvbusbrtl28xxu), or enable automatic detaching at compile time.
+
+The repository owner recommends
+
+sudo rmmod dvb_usb_rtl28xxu rtl2832
+in that case. If everything went well, the receiver is ready to get sensor data and rtl_433 helps with processing, so that after a few seconds you should get signals in the nearby area (yes, even temperature sensor data of your neighbor's or sensor data of connected cars.)
+
+
+
+
 
 ### Start the Node.js backend on port 3000
 * cd server
