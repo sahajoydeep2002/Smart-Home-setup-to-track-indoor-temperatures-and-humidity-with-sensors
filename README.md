@@ -34,14 +34,47 @@ Raspberry Pi 3 Model B: the small single-board computer servers as our heart and
 
 At first, setup your sensors whereever you like in your appartment and connect your RTL-SDR receiver with the Raspberry Pi. How to receive the raw data out of the nearby area? A little open source software will help us with that: rtl_433 is a program (Github link) to decode traffic from devices that are broadcasting on 433.9 MHz. We install it on our Raspberry Pi:
 
-<p align = "center">
-<img class = "center" width = 70% src="vue-frontend/image1_page-0001.jpg">
-</p>
-
+sudo apt-get update
+sudo apt-get upgrade
+# install dependencies
+sudo apt-get install libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr cmake
+# clone rtl_433 Git Repository
+git clone https://github.com/merbanan/rtl_433.git
+# change to directory
+cd rtl_433/
+# make build folder
+mkdir build
+cd build/
+# compile
+cmake ../
+# make
+make
+# install
+sudo make install
+# test if rtl_433 was properly installed
+rtl_433 -h
+sudo apt-get update
+sudo apt-get upgrade
+# install dependencies
+sudo apt-get install libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr cmake
+# clone rtl_433 Git Repository
+git clone https://github.com/merbanan/rtl_433.git
+# change to directory
+cd rtl_433/
+# make build folder
+mkdir build
+cd build/
+# compile
+cmake ../
+# make
+make
+# install
+sudo make install
+# test if rtl_433 was properly installed
+rtl_433 -h
 After that we test if the program detects our RTL-SDR receiver with
 
 rtl_433 -G
-
 I had some trouble with the following error: Kernel driver is active, or device is claimed by second instance of librtlsdr. In the first case, please either detach or blacklist the kernel module (dvbusbrtl28xxu), or enable automatic detaching at compile time.
 
 The repository owner recommends
@@ -49,6 +82,13 @@ The repository owner recommends
 sudo rmmod dvb_usb_rtl28xxu rtl2832
 in that case. If everything went well, the receiver is ready to get sensor data and rtl_433 helps with processing, so that after a few seconds you should get signals in the nearby area (yes, even temperature sensor data of your neighbor's or sensor data of connected cars.)
 
+Incoming Messages
+
+Incoming Messages (2)
+
+Hurray, hardware is running!
+
+Proceed to the second part of the tutorial "Get and process your smart home sensor data with MQTT Broker Mosquitto and a Node.js backend".
 
 
 
