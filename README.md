@@ -97,8 +97,188 @@ Hurray, hardware is running!
 
 Proceed to the second part of the tutorial "Get and process your smart home sensor data with MQTT Broker Mosquitto and a Node.js backend".
 
+# Get and process your smart home sensor data with MQTT Broker Mosquitto and a Node.js backend
+
+The main problem in this part was how to set up a stable and endlessly running task on my Raspberry Pi to continuously receive the (correct!) sensor data. Secondly I wanted it to somehow process and transfer it to a backend/microservice/middleware, which then would provide an upcoming frontend with JSON data to display. MQTT is the IoT protocol to go with but how to set it up? How can a MQTT broker like Mosquitto work with a Node.js backend properly?
+
+##Setup a web server backend with Node.js and Express.js
+
+Multiple solutions would be possible here, but I decided for a Javascript Node.js backend which will be running with Express.js. Make sure node and npm are ready on your machine or install them first.
+
+node -v
+npm -v
+Setup a project folder and a make a subfolder "server". Create a new file "server.js" within and code a basic backend service. We will upgrade its functionality later.
 
 
+const express = require('express');
+const app = express();
+// test
+app.get('/', function (req, res) {
+ res.send('hello world!');
+});
+app.listen(3000, () => console.log('App listening on port ', 3000));
+
+
+Don't forget to install the npm package_ express_ in your console and start the application! (Don't know how Node.js with Express.js works? Check out e.g. this tutorial.)
+
+
+npm init
+npm install express --save
+node server.js
+Go to your browser and check if your web server works on http://localhost:3000.
+
+##Setup the MQTT broker Mosquitto
+
+Why MQTT? The protocol is a lightweight publish/subscribe messaging transport solution which is very popular in the IoT field. We will use a MQTT broker as the control center to receive raw sensor data from our rtl_433 program, we installed in the previous chapter and forward them to our web server. Mosquitto is a common MQTT broker and is installed and tested on or Raspberry Pi with
+
+sudo apt install -y mosquitto mosquitto-clients
+
+
+mosquitto -v
+
+
+The broker will be accessable to clients on mqtt://localhost:1883.
+
+##Setup a bash script that pipes incoming data to Mosquitto
+
+The Raspberry Pi now gets the important task to not only start rtl_433 to decode traffic from devices that are broadcasting on 433.9 MHz manually, but to start this task on every reboot automatically. For that, we create a cronjob with the tool crontab, which should be installed on our system.
+
+crontab -h
+
+On your Raspberry Pi create a new file tshraspberryscript.sh (or whatever you want) in your pi home folder and make it executable from your terminal:
+
+
+chmod +x tsh_raspberry_script.sh
+
+
+After that, open the file in a text editor and add the following bash script. It will start rtl_433 and pipe the output in JSON format to Mosquitto, where it will be published in the topic home/rtl_344. Don't forget to close and safe the file.
+
+### !bin/bash
+
+/usr/local/bin/rtl_433 -F json -M utc ' mosquitto_pub -t home/rtl_433 -l
+Now we can set up a new cronjob which will execute the shell script on every Raspberry Pi reboot. Open up a terminal:
+
+### edit crontabs of user "pi"
+crontab -e
+### a text editor will open and load all existing cronjobs, add
+@reboot sleep 60 && sh /home/pi/tsh_raspberry_script.sh
+
+# Build a simple database with lowdb and Node.js
+
+In development mode a very basic database will suffice our requirements, that's why I used lowdb (Github link) to store the sensor data on localhost first. Lowdb is based on a JSON file in our project folder. If you would like to take an eye on performance and persistence later I have built a solution with PostgreSQL too, but this is another story.
+
+
+
+npm install lowdb --save
+
+
+
+In your server.js add some code. Set some defaults first, which are required if your JSON file (mine is "db.json") is empty at first.
+
+
+
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('db.json');
+const db = low(adapter);
+db.defaults({ posts: [] })
+ .write()
+ 
+ 
+That's all. Now we can write into, edit and delete data within our database.
+
+
+# Consume MQTT sensor data and save it to the database
+
+
+We go back to our Node.js application and install the MQTT client MQTT.js (Github link) to be able to consume data that is available via Mosquitto.
+
+
+npm install mqtt --save
+
+
+With the newly installed MQTT client we are able to receive all the messages that the MQTT broker delivers over its API on mqtt://localhost:1883. We now filter them to only process and store "correct" data sets (remember: our RTL-SDR receiver found signals from multiple IoT gagdets we are not interested in).
+
+My setup included some buffer, temperature and date parsing, basic verifying and filtering regarding incoming messages before I stored the correct Javascript Objects into the lowdb. Continue working on your server.js:
+
+
+const mqtt = require('mqtt');
+const client = mqtt.connect(mqtt://localhost:1883);
+fahrenheitToCelsius = (fahrenheit) => {
+ var fTempVal = parseFloat(fahrenheit);
+ var cTempVal = (fTempVal - 32) * (5 / 9);
+ return (Math.round(cTempVal * 100) / 100);
+}
+client.on('message', function (topic, message) {
+ // message is buffer
+ var stringBuf = message && message.toString('utf-8')
+ try {
+   var json = JSON.parse(stringBuf);
+   // console.log(json);
+   if (json.model === 'inFactory sensor') {
+     if (json.id === 91 '' json.id === 32) {
+     // catch my specific sensor model
+       if (json.temperature_F && json.humidity) {
+       // add data to lowdb
+       const time = moment.utc(json.time).tz("Europe/Berlin");
+       const formattedTime = time.format('YYYY-MM-DD HH:mm:ss');
+       console.log('write post');
+       db.get('posts')
+       .push({ id: uuid.v1(), room: json.id, temp: 
+            fahrenheitToCelsius(json.temperature_F), 
+            humidity: json.humidity, time: formattedTime }).write()
+       }
+     }
+   }
+ } catch (e) {
+   console.error(stringBuf);
+   }
+})
+
+
+
+That's it. Whenever the MQTT client receives sensor data it will store it in our database accordingly. You can check that in your "db.json" file in your project folder, which grows bigger and bigger during runtime. It won't delete itself on backend restart!
+
+
+
+{
+"posts": [
+{
+"id": "c107fc70-1f33-11e9-9b95-fbfea27c8046",
+"room": 32,
+"temp": 22.89,
+"humidity": 30,
+"time": "2019-01-23 18:24:34"
+},
+{
+"id": "6607f9f0-1f34-11e9-9b95-fbfea27c8046",
+"room": 32,
+"temp": 22.89,
+"humidity": 30,
+"time": "2019-01-23 18:29:11"
+},
+{
+"id": "16492190-1f35-11e9-9b95-fbfea27c8046",
+"room": 91,
+"temp": 22.72,
+"humidity": 35,
+"time": "2019-01-23 18:34:07"
+}
+]
+}
+
+
+# Provide sensor data via REST API
+
+Now that we have clean data in our lowdb we might want to provide them via a REST API to be consumable for a frontend or multiple frontends (smartphone app, web app, ..). We already deployed a local web server running on Node.js and Express.js and can very simply add an endpoint the provides the database data with the following code. Add it to your server.js!
+
+
+app.get('/api', (req, res) => {
+ res.send(db.get('posts'));
+});
+
+
+Yes, that's it. Check if it is working on http://localhost:3000/api or with your favourite REST client (e.g. Postman).
 
 ### Start the Node.js backend on port 3000
 * cd server
