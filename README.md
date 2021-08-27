@@ -2,7 +2,7 @@
 
 This project is a setup for a basic smart home web app tracking sensor data for temperature and humidity with a Raspberry Pi and web technologies like Mosquitto, Node.js, Express.js, Vue.js, Quasar and Chart.js.
 
-Smart Home setup to track indoor temperatures and humidity with sensors, Raspberry Pi, MQTT, Node.js, Vue.js and Chart.js
+# How To: Smart Home setup to track indoor temperatures and humidity with sensors, Raspberry Pi, MQTT, Node.js, Vue.js and Chart.js tutorial
 
 TLDR; This three-part tutorial explains how to setup a basic smart home web app tracking sensor data for temperature and humidity with a Raspberry Pi and web technologies like Mosquitto, Node.js, Express.js, Vue.js, Quasar and Chart.js.
 
@@ -441,6 +441,13 @@ export default {
 }
 
 That's it! On every page reload, the web application fetches available sensor data from our backend service and will display it as a line chart. You would like to add more functionality? You can find all features we built and more (filtering, reloading, deploying, saving persistently, ..) in my Github repository for this project.
+
+# Add more features?
+
+I wrote some more or less standalone tutorials, which will help you to improve your existent application with some more capacities.
+
+Setup PostgreSQL database and API for Node.js
+Get a CSV download out of PostgreSQL or lowdb database on Node.js
 
 
 ### Start the Node.js backend on port 3000
