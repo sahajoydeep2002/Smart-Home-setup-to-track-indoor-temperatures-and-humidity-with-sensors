@@ -177,31 +177,6 @@ In your server.js add some code. Set some defaults first, which are required if 
 
 
 
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('db.json');
-const db = low(adapter);
-db.defaults({ posts: [] })
- .write()
- 
- 
-That's all. Now we can write into, edit and delete data within our database.
-
-
-# Consume MQTT sensor data and save it to the database
-
-
-We go back to our Node.js application and install the MQTT client MQTT.js (Github link) to be able to consume data that is available via Mosquitto.
-
-
-npm install mqtt --save
-
-
-With the newly installed MQTT client we are able to receive all the messages that the MQTT broker delivers over its API on mqtt://localhost:1883. We now filter them to only process and store "correct" data sets (remember: our RTL-SDR receiver found signals from multiple IoT gagdets we are not interested in).
-
-My setup included some buffer, temperature and date parsing, basic verifying and filtering regarding incoming messages before I stored the correct Javascript Objects into the lowdb. Continue working on your server.js:
-
-
 const mqtt = require('mqtt');
 const client = mqtt.connect(mqtt://localhost:1883);
 fahrenheitToCelsius = (fahrenheit) => {
@@ -234,6 +209,8 @@ client.on('message', function (topic, message) {
    console.error(stringBuf);
    }
 })
+
+
 
 
 
