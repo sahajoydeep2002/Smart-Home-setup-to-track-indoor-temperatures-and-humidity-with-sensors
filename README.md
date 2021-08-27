@@ -180,7 +180,7 @@ In your server.js add some code. Set some defaults first, which are required if 
 <p align = "center">
 <img class = "center" width = 70% src="vue-frontend/code 1_page-0001.jpg">
 </p>
-align = "center" Editavle Code : 
+Editavle Code : 
 const mqtt = require('mqtt');
 const client = mqtt.connect(mqtt://localhost:1883);
 fahrenheitToCelsius = (fahrenheit) => {
