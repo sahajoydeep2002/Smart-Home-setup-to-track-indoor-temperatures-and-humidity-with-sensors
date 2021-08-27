@@ -36,9 +36,9 @@ At first, setup your sensors whereever you like in your appartment and connect y
 
 sudo apt-get update
 sudo apt-get upgrade
-# install dependencies
+### install dependencies
 sudo apt-get install libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr cmake
-# clone rtl_433 Git Repository
+### clone rtl_433 Git Repository
 git clone https://github.com/merbanan/rtl_433.git
 # change to directory
 cd rtl_433/
