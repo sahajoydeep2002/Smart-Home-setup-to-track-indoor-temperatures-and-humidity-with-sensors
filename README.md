@@ -40,51 +40,58 @@ sudo apt-get upgrade
 sudo apt-get install libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr cmake
 ### clone rtl_433 Git Repository
 git clone https://github.com/merbanan/rtl_433.git
-# change to directory
+### change to directory
 cd rtl_433/
-# make build folder
+### make build folder
 mkdir build
 cd build/
-# compile
+### compile
 cmake ../
-# make
+### make
 make
-# install
+### install
 sudo make install
-# test if rtl_433 was properly installed
+### test if rtl_433 was properly installed
 rtl_433 -h
 sudo apt-get update
 sudo apt-get upgrade
-# install dependencies
+### install dependencies
 sudo apt-get install libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr cmake
-# clone rtl_433 Git Repository
+### clone rtl_433 Git Repository
 git clone https://github.com/merbanan/rtl_433.git
-# change to directory
+### change to directory
 cd rtl_433/
-# make build folder
+### make build folder
 mkdir build
 cd build/
-# compile
+### compile
 cmake ../
-# make
+### make
 make
-# install
+### install
 sudo make install
-# test if rtl_433 was properly installed
+### test if rtl_433 was properly installed
 rtl_433 -h
+
 After that we test if the program detects our RTL-SDR receiver with
 
 rtl_433 -G
+
 I had some trouble with the following error: Kernel driver is active, or device is claimed by second instance of librtlsdr. In the first case, please either detach or blacklist the kernel module (dvbusbrtl28xxu), or enable automatic detaching at compile time.
 
-The repository owner recommends
 
 sudo rmmod dvb_usb_rtl28xxu rtl2832
+
 in that case. If everything went well, the receiver is ready to get sensor data and rtl_433 helps with processing, so that after a few seconds you should get signals in the nearby area (yes, even temperature sensor data of your neighbor's or sensor data of connected cars.)
 
-Incoming Messages
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/11b0f646239547b7b4b115dcd2e12104.png">
+</p>
 
-Incoming Messages (2)
+
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/aa1627243d4f488f9df5fa730a719d69.png">
+</p>
 
 Hurray, hardware is running!
 
