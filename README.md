@@ -34,6 +34,11 @@ Raspberry Pi 3 Model B: the small single-board computer servers as our heart and
 
 At first, setup your sensors whereever you like in your appartment and connect your RTL-SDR receiver with the Raspberry Pi. How to receive the raw data out of the nearby area? A little open source software will help us with that: rtl_433 is a program (Github link) to decode traffic from devices that are broadcasting on 433.9 MHz. We install it on our Raspberry Pi:
 
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/image1.pdf">
+</p>
+
+
 ### Start the Node.js backend on port 3000
 * cd server
 * npm install
