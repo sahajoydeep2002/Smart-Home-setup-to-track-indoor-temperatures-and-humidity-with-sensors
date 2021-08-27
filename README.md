@@ -54,6 +54,7 @@ sudo make install
 # test if rtl_433 was properly installed
 rtl_433 -h
 
+
 ### Start the Node.js backend on port 3000
 * cd server
 * npm install
