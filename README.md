@@ -180,9 +180,8 @@ In your server.js add some code. Set some defaults first, which are required if 
 <p align = "center">
 <img class = "center" width = 70% src="vue-frontend/code 1_page-0001.jpg">
 </p>
-
-
-Editavle Code : const mqtt = require('mqtt');
+align = "center" Editavle Code : 
+const mqtt = require('mqtt');
 const client = mqtt.connect(mqtt://localhost:1883);
 fahrenheitToCelsius = (fahrenheit) => {
  var fTempVal = parseFloat(fahrenheit);
@@ -225,8 +224,8 @@ That's it. Whenever the MQTT client receives sensor data it will store it in our
 <p align = "center">
 <img class = "center" width = 70% src="vue-frontend/code 2_page-0001.jpg">
 </p>
-
-Editable Code : {
+Editable Code : 
+{
 "posts": [
 {
 "id": "c107fc70-1f33-11e9-9b95-fbfea27c8046",
