@@ -177,72 +177,43 @@ In your server.js add some code. Set some defaults first, which are required if 
 
 
 
-const mqtt = require('mqtt');
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/code 1_page-0001.jpg">
+</p>
 
+
+Editavle Code : const mqtt = require('mqtt');
 const client = mqtt.connect(mqtt://localhost:1883);
-
 fahrenheitToCelsius = (fahrenheit) => {
-
  var fTempVal = parseFloat(fahrenheit);
- 
  var cTempVal = (fTempVal - 32) * (5 / 9);
- 
  return (Math.round(cTempVal * 100) / 100);
- 
 }
-
 client.on('message', function (topic, message) {
-
  // message is buffer
- 
  var stringBuf = message && message.toString('utf-8')
- 
  try {
- 
    var json = JSON.parse(stringBuf);
-   
    // console.log(json);
-   
-  if (json.model === 'inFactory sensor') {
-   
+   if (json.model === 'inFactory sensor') {
      if (json.id === 91 '' json.id === 32) {
-     
      // catch my specific sensor model
-     
        if (json.temperature_F && json.humidity) {
-       
        // add data to lowdb
-       
        const time = moment.utc(json.time).tz("Europe/Berlin");
-       
        const formattedTime = time.format('YYYY-MM-DD HH:mm:ss');
-       
        console.log('write post');
-       
        db.get('posts')
-       
        .push({ id: uuid.v1(), room: json.id, temp: 
-       
             fahrenheitToCelsius(json.temperature_F), 
-            
             humidity: json.humidity, time: formattedTime }).write()
-            
-          }
-       
-        } 
-     
-      }
-   
-    } catch (e) {
- 
-      console.error(stringBuf);
-   
-      }
-      
+       }
+     }
+   }
+ } catch (e) {
+   console.error(stringBuf);
+   }
 })
-
-
-
 
 
 
@@ -251,55 +222,36 @@ That's it. Whenever the MQTT client receives sensor data it will store it in our
 
 
 
-{
+<p align = "center">
+<img class = "center" width = 70% src="vue-frontend/code 2_page-0001.jpg">
+</p>
 
+Editable Code : {
 "posts": [
-
 {
-
 "id": "c107fc70-1f33-11e9-9b95-fbfea27c8046",
-
 "room": 32,
-
 "temp": 22.89,
-
 "humidity": 30,
-
 "time": "2019-01-23 18:24:34"
-
 },
-
 {
-
 "id": "6607f9f0-1f34-11e9-9b95-fbfea27c8046",
-
 "room": 32,
-
 "temp": 22.89,
-
 "humidity": 30,
-
 "time": "2019-01-23 18:29:11"
-
 },
-
 {
-
 "id": "16492190-1f35-11e9-9b95-fbfea27c8046",
-
 "room": 91,
-
 "temp": 22.72,
-
 "humidity": 35,
-
 "time": "2019-01-23 18:34:07"
-
 }
-
 ]
-
 }
+
 
 
 # Provide sensor data via REST API
